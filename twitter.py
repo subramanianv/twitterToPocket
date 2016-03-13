@@ -1,19 +1,20 @@
 import tweepy
 import opengraph
 from  Pocket import Pocket
+import json
 
 
-twitter_consumer_key = '9LzPjApi2PCIyyL80ronDQs6Z'
-twitter_consumer_secret = 'ix8vNqZ7SnGLO8uC96AJfch61zrgXd6Xu8WpJsPH6e2ijbq0Oy' 
-twitter_access_token = '118045724-I7aOpcED9HAoZUjbKWuTlBVqCGnJzoIy8NAi0Gzk'
-twitter_access_token_secret = 'kINfq5zX256pBWomADEShy8x4FQlSCPR9vOOSwh7ix840'
+with open('credentials.json') as c_file:
+   credentials = json.load(c_file)
 
-pocket_consumer_key = '52305-e530cd1f11383695d708bc76'
-pocket_access_token = '773939bb-7eed-1f81-5633-c501a2'
+
+
+
 
 max_id = 0
-auth = tweepy.OAuthHandler(twitter_consumer_key,twitter_consumer_secret)
-auth.set_access_token(twitter_access_token, twitter_access_token_secret)
+auth = tweepy.OAuthHandler(credentials['twitter']['consumer_key'],credentials['twitter']['consumer_secret'])
+auth.set_access_token(credentials['twitter']['access_token'], credentials['twitter']['access_token_secret'])
+
 
 api = tweepy.API(auth)
 q = 'blockchain'
@@ -49,6 +50,6 @@ for _url in all_urls:
 og_urls = list(set(og_urls))
 print og_urls
 print "Max id", max_id
-pocket = Pocket(pocket_consumer_key, pocket_access_token)
+pocket = Pocket(credentials['pocket']['consumer_key'], credentials['pocket']['access_token'])
 for og_url in og_urls:
    pocket.add(og_url, q)
